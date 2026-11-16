@@ -1,19 +1,24 @@
 /* ================================================================
    TADOKU READER — renderer, level filter, search
    Consumes READERS array from js/data/readers.js
+
+   SELF-CONTAINED (Option B1)
+   --------------------------
+   All media lives inside this folder:
+     video → videos/reading/level{L}/{base}.mp4
+     pdf   → pdf/reading/{base}.pdf
+     cover → images/covers/level{L}/{base}.png
    ================================================================ */
 
 (function () {
   "use strict";
 
-  const N5_BASE = "../n5-study-app";
-
   // ─── Path helpers ─────────────────────────────────────────────
   function mediaUrls(book) {
     return {
-      video: `${N5_BASE}/videos/reading/level${book.level}/${book.base}.mp4`,
-      pdf:   `${N5_BASE}/pdf/reading/${book.base}.pdf`,
-      cover: `${N5_BASE}/images/reading/${book.base}.png`,
+      video: `videos/reading/level${book.level}/${book.base}.mp4`,
+      pdf:   `pdf/reading/${book.base}.pdf`,
+      cover: `images/covers/level${book.level}/${book.base}.png`,
     };
   }
 
@@ -82,12 +87,13 @@
   let activeLevel = "all";
   let searchTerm  = "";
 
-  // ─── Render ───────────────────────────────────────────────────
-  const grid       = document.getElementById("readerGrid");
-  const statusEl   = document.getElementById("statusLine");
-  const tabsEl     = document.getElementById("levelTabs");
-  const searchEl   = document.getElementById("searchInput");
+  // ─── DOM refs ─────────────────────────────────────────────────
+  const grid     = document.getElementById("readerGrid");
+  const statusEl = document.getElementById("statusLine");
+  const tabsEl   = document.getElementById("levelTabs");
+  const searchEl = document.getElementById("searchInput");
 
+  // ─── Filtering ────────────────────────────────────────────────
   function applyFilters() {
     const cards = grid.querySelectorAll(".reader-card");
     let visible = 0;
@@ -118,6 +124,7 @@
     statusEl.textContent = `Showing ${visible} of ${READERS.length} books`;
   }
 
+  // ─── Render ───────────────────────────────────────────────────
   function render() {
     if (!Array.isArray(READERS) || READERS.length === 0) {
       grid.innerHTML =
