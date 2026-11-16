@@ -17,16 +17,24 @@
   function mediaUrls(book) {
     return {
       video: `videos/reading/level${book.level}/${book.base}.mp4`,
-      pdf:   `pdf/reading/${book.base}.pdf`,
+      pdf: `pdf/reading/${book.base}.pdf`,
       cover: `images/covers/level${book.level}/${book.base}.png`,
     };
   }
 
   // ─── HTML escaping for user-supplied titles ───────────────────
   function esc(s) {
-    return String(s).replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-    }[c]));
+    return String(s).replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    );
   }
 
   // ─── Card builder ─────────────────────────────────────────────
@@ -34,7 +42,7 @@
     const urls = mediaUrls(book);
     const has = book.has || {};
     const showVideo = has.video !== false;
-    const showPdf   = has.pdf   !== false;
+    const showPdf = has.pdf !== false;
     const showCover = has.cover !== false;
 
     // Cover: link to video if video exists, otherwise no link
@@ -59,7 +67,7 @@
 
     const coverWrapper = showVideo
       ? `<a class="reader-cover-link" href="${urls.video}" target="_blank" rel="noopener noreferrer">${coverInner}</a>`
-      : `<div class="reader-cover-link">${coverInner}</div>`;
+      : `<div class="reader-cover-wrap">${coverInner}</div>`;
 
     const watchBtn = showVideo
       ? `<a class="reader-btn reader-btn-watch" href="${urls.video}" target="_blank" rel="noopener noreferrer">▶ Watch</a>`
@@ -85,12 +93,12 @@
 
   // ─── State ────────────────────────────────────────────────────
   let activeLevel = "all";
-  let searchTerm  = "";
+  let searchTerm = "";
 
   // ─── DOM refs ─────────────────────────────────────────────────
-  const grid     = document.getElementById("readerGrid");
+  const grid = document.getElementById("readerGrid");
   const statusEl = document.getElementById("statusLine");
-  const tabsEl   = document.getElementById("levelTabs");
+  const tabsEl = document.getElementById("levelTabs");
   const searchEl = document.getElementById("searchInput");
 
   // ─── Filtering ────────────────────────────────────────────────
@@ -140,9 +148,9 @@
   tabsEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".level-tab");
     if (!btn) return;
-    tabsEl.querySelectorAll(".level-tab").forEach((b) =>
-      b.classList.remove("active"),
-    );
+    tabsEl
+      .querySelectorAll(".level-tab")
+      .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     activeLevel = btn.dataset.level;
     applyFilters();
