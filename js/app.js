@@ -52,7 +52,6 @@
            src="${urls.cover}"
            alt="${esc(book.title)} cover"
            loading="lazy"
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
          />
          <div class="cover-placeholder" style="display:none">
            <span class="ph-icon">📖</span>
@@ -91,8 +90,33 @@
   }
 
   // ─── State ────────────────────────────────────────────────────
-  let activeLevel = "all";
-  let searchTerm = "";
+  // ─── Saved preferences (level filter + search) ────────────────
+  const PREFS_KEY = "tadoku-prefs-v1";
+
+  function loadPrefs() {
+    try {
+      return JSON.parse(localStorage.getItem(PREFS_KEY) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function savePrefs(patch) {
+    try {
+      localStorage.setItem(
+        PREFS_KEY,
+        JSON.stringify(Object.assign(loadPrefs(), patch)),
+      );
+    } catch (e) {
+      /* private mode - the filter just will not persist */
+    }
+  }
+
+  const savedPrefs = loadPrefs();
+  let activeLevel =
+    typeof savedPrefs.level === "string" ? savedPrefs.level : "all";
+  let searchTerm =
+    typeof savedPrefs.search === "string" ? savedPrefs.search : "";
 
   // ─── DOM refs ─────────────────────────────────────────────────
   const grid = document.getElementById("readerGrid");
@@ -140,6 +164,16 @@
       return;
     }
     grid.innerHTML = READERS.map(buildCard).join("");
+
+    // Cover fallback: if an image fails, hide it and reveal the placeholder.
+    grid.querySelectorAll(".reader-cover").forEach((img) => {
+      img.addEventListener("error", () => {
+        img.style.display = "none";
+        const ph = img.nextElementSibling;
+        if (ph) ph.style.display = "flex";
+      });
+    });
+
     applyFilters();
   }
 
@@ -152,6 +186,7 @@
       .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     activeLevel = btn.dataset.level;
+    savePrefs({ level: activeLevel });
     applyFilters();
   });
 
@@ -160,11 +195,20 @@
     clearTimeout(searchDebounce);
     searchDebounce = setTimeout(() => {
       searchTerm = e.target.value.trim().toLowerCase();
+      savePrefs({ search: searchTerm });
       applyFilters();
     }, 120);
   });
 
   // ─── Boot ─────────────────────────────────────────────────────
+  // Restore the saved level + search before the first paint.
+  if (searchEl && searchTerm) searchEl.value = searchTerm;
+  if (tabsEl && activeLevel !== "all") {
+    tabsEl.querySelectorAll(".level-tab").forEach((b) => {
+      b.classList.toggle("active", b.dataset.level === activeLevel);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", render);
   if (document.readyState !== "loading") render();
 })();

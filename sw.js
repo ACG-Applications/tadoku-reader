@@ -2,7 +2,7 @@
    TADOKU READER — Service Worker (App Shell Offline Support)
    ================================================================ */
 
-const CACHE_NAME = "tadoku-v6";
+const CACHE_NAME = "tadoku-v7";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
