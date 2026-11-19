@@ -38,6 +38,31 @@ body {
   margin-bottom: 16px;
 }
 
+/* Brand mark (top right) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.antonio-signature {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* keep the mark small enough to sit beside the back button on phones */
+@media (max-width: 480px) {
+  .antonio-signature {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .header-left {
   display: flex;
   align-items: baseline;
@@ -173,6 +198,15 @@ body {
 }
 
 /* Cover (clickable, opens video) */
+/* Books with no video use a div wrapper instead of the <a>. It needs the same box,
+   otherwise the cover has no aspect ratio and overflows the card. */
+.reader-cover-wrap {
+  display: block;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: #f0ebe3;
+  overflow: hidden;
+}
 .reader-cover-link {
   display: block;
   position: relative;
@@ -229,20 +263,6 @@ body {
   font-weight: 500;
 }
 
-/* Level badge overlaid on cover */
-.reader-level-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(108, 139, 107, 0.92);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
-  z-index: 2;
-}
 
 /* Card body */
 .reader-body {

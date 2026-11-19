@@ -79,7 +79,6 @@
 
     return `
       <article class="reader-card" data-level="${book.level}" data-title="${esc(book.title.toLowerCase())}">
-        <span class="reader-level-badge">L${book.level}</span>
         ${coverWrapper}
         <div class="reader-body">
           <h3 class="reader-title">${esc(book.title)}</h3>

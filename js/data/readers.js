@@ -11,9 +11,9 @@
    - title : shown on the card (English or Japanese, your choice)
    - level : 0–4 (used for the video subfolder + level badge)
    - base  : filename WITHOUT extension. The same base is used for:
-               video → ../n5-study-app/videos/reading/level{L}/{base}.mp4
-               pdf   → ../n5-study-app/pdf/reading/{base}.pdf
-               cover → ../n5-study-app/images/reading/{base}.png
+               video → videos/reading/level{L}/{base}.mp4
+               pdf   → pdf/reading/{base}.pdf
+               cover → images/covers/level{L}/{base}.png
 
    OPTIONAL: hide a missing asset for a specific book
    ---------------------------------------------------
@@ -292,7 +292,7 @@ const READERS = [
   {
     title: "Shiitake Mushroom",
     level: 3,
-    base: "Level-3-shiiitake-mushroom",
+    base: "Level-3-shiitake-mushroom",
   },
   {
     title: "Mr. Kichishiroku",
@@ -300,9 +300,9 @@ const READERS = [
     base: "Level-3-the-story-of-mr-kichishiroku-a-fish-called-babakuro",
   },
   {
-    title: "Tsureruzegusa",
+    title: "Tsurezuregusa",
     level: 3,
-    base: "Level-3-tsureruzegusa",
+    base: "Level-3-tsurezuregusa",
   },
   {
     title: "Wild Rose",
